@@ -1,5 +1,3 @@
-package Philosopher;
-
 import javafx.scene.ParallelCamera;
 
 import java.util.Date;

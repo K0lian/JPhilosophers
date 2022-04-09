@@ -1,5 +1,3 @@
-import Philosopher.Philosopher;
-
 import java.lang.reflect.Array;
 import java.util.Scanner;
 
@@ -31,8 +29,8 @@ public class Parser {
         return numEachMustEat;
     }
 
-    public Philosopher.Philosopher[] getPhilo() {
-        return philo;
+    public Philosopher getPhilo(int i) {
+        return philo[i];
     }
 
     public Parser() {
@@ -65,7 +63,7 @@ public class Parser {
             numEachMustEat = -1;
         philo = new Philosopher[numPhilo];
         for (int i=0; i < numPhilo; i++)
-            philo[i] = new Philosopher(numEachMustEat, i, super., 0);
+            philo[i] = new Philosopher(numEachMustEat, i, this);
     }
 
     @Override

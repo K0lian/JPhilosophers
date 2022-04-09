@@ -8,8 +8,7 @@ public class Main {
             parser = new Parser(args);
 //        System.out.println(phil.toString());
         for (int i=0; i < parser.getNumPhilo(); i++){
-            Thread myThread = new Thread(parser.getPhilo()[i]);
-            myThread.get(1);
+            Thread myThread = new Thread(parser.getPhilo(i));
             myThread.setDaemon(true);
             myThread.start();
         }
