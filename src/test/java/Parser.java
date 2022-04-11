@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Parser {
     private int numPhilo;
-    private int timeToDie;
-    private int timeToEat;
-    private int timeToSleep;
+    private long timeToDie;
+    private long timeToEat;
+    private long timeToSleep;
     private int numEachMustEat;
     private Philosopher[] philo;
 
@@ -13,15 +13,15 @@ public class Parser {
         return numPhilo;
     }
 
-    public int getTimeToDie() {
+    public long getTimeToDie() {
         return timeToDie;
     }
 
-    public int getTimeToEat() {
+    public long getTimeToEat() {
         return timeToEat;
     }
 
-    public int getTimeToSleep() {
+    public long getTimeToSleep() {
         return timeToSleep;
     }
 
@@ -38,11 +38,11 @@ public class Parser {
         System.out.println("Write number of philisophers: ");
         numPhilo = scanner.nextInt();
         System.out.println("Write time to die: ");
-        timeToDie = scanner.nextInt();
+        timeToDie = scanner.nextLong();
         System.out.println("Write time to eat: ");
-        timeToEat = scanner.nextInt();
+        timeToEat = scanner.nextLong();
         System.out.println("Write time to sleep: ");
-        timeToSleep = scanner.nextInt();
+        timeToSleep = scanner.nextLong();
         System.out.println("Write number of times each philosopher must eat or 0: ");
         numEachMustEat = scanner.nextInt();
         goPhilosophers();
@@ -63,7 +63,8 @@ public class Parser {
             numEachMustEat = -1;
         philo = new Philosopher[numPhilo];
         for (int i=0; i < numPhilo; i++)
-            philo[i] = new Philosopher(numEachMustEat, i, this);
+            philo[i] = new Philosopher(numEachMustEat, i, this, i > 0 ? philo[i-1] : null);
+        philo[0].setNext(philo[numPhilo - 1]);
     }
 
     @Override
