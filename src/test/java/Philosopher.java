@@ -38,7 +38,7 @@ public class Philosopher implements Runnable{
         numEat = numEachMustEat;
         isEating = false;
         position = pos;
-        lastEat = date.getTime();
+        lastEat = System.currentTimeMillis();
         pars = prs;
         fork = new Fork((byte) 0);
         next = phil;
@@ -53,7 +53,7 @@ public class Philosopher implements Runnable{
     }
 
     private void print(int position, String str){
-        System.out.println(date.getTime() + " philo №" + position + str);
+        System.out.println(System.currentTimeMillis() + " philo №" + position + str);
     }
 
     public void run(){
@@ -68,6 +68,8 @@ public class Philosopher implements Runnable{
                     fork.setIsTaken((byte) 1);
 //                }
                 synchronized (next.isFork()) {
+                    if (pars.getNumPhilo() == 1)
+                        while(true) ;
 //                if (next.isFork().getIsTaken() == 0) {
                     print((position + 1), " has taken right a fork");
                     next.isFork().setIsTaken((byte) 1);
@@ -81,7 +83,9 @@ public class Philosopher implements Runnable{
                 if (numEat > 0)
                     numEat-=1;
 
-                setLastEat(date.getTime()); //fix
+                setLastEat(System.currentTimeMillis()); //fix
+
+                checkLive();
 
                 if (fork.getIsTaken() != 0) {
                     print((position + 1), " has drop forks");
@@ -96,6 +100,13 @@ public class Philosopher implements Runnable{
                 Thread.sleep(pars.getTimeToSleep());
             } catch (InterruptedException ex) { }
             print((position+1), " is thinking");
+        }
+    }
+
+    private void checkLive() {
+        if (lastEat < System.currentTimeMillis() - pars.getTimeToDie()) {
+            print(position + 1, " dead");
+            System.exit(0);
         }
     }
 }
