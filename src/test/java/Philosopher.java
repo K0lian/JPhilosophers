@@ -53,7 +53,7 @@ public class Philosopher implements Runnable{
     }
 
     private void print(int position, String str){
-        System.out.println(date.getTime() + " philo №" + (position+1) + str);
+        System.out.println(date.getTime() + " philo №" + position + str);
     }
 
     public void run(){
@@ -63,36 +63,33 @@ public class Philosopher implements Runnable{
             } catch (InterruptedException ex) {}
         while(1>0) {
             synchronized (fork){
-                if (fork.getIsTaken() == 0) {
+//                if (fork.getIsTaken() == 0) {
                     print((position + 1), " has taken left a fork");
                     fork.setIsTaken((byte) 1);
-                }
-            }
-            synchronized (next.isFork()) {
-                if (next.isFork().getIsTaken() == 0) {
+//                }
+                synchronized (next.isFork()) {
+//                if (next.isFork().getIsTaken() == 0) {
                     print((position + 1), " has taken right a fork");
                     next.isFork().setIsTaken((byte) 1);
+//                }
                 }
-            }
-            print((position+1), " is eating");
-            try {
-                Thread.sleep(pars.getTimeToEat());
-            } catch (InterruptedException ex) {}
+                print((position+1), " is eating");
+                try {
+                    Thread.sleep(pars.getTimeToEat());
+                } catch (InterruptedException ex) {}
 
-            if (numEat > 0)
-                numEat-=1;
+                if (numEat > 0)
+                    numEat-=1;
 
-            setLastEat(date.getTime()); //fix
+                setLastEat(date.getTime()); //fix
 
-            synchronized (next.isFork()) {
-                synchronized (fork) {
-                    if (fork.getIsTaken() != 0) {
-                        print((position + 1), " has drop forks");
-                        next.isFork().setIsTaken((byte) 0);
-                    }
+                if (fork.getIsTaken() != 0) {
+                    print((position + 1), " has drop forks");
+                    next.isFork().setIsTaken((byte) 0);
+                    if (next.isFork().getIsTaken() != 0)
+                        fork.setIsTaken((byte) 0);
                 }
-                if (next.isFork().getIsTaken() != 0)
-                    fork.setIsTaken((byte) 0);
+
             }
             print((position+1), " is sleeping");
             try {
